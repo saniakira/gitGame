@@ -1,0 +1,30 @@
+﻿I'm sorry, but an uncaught exception occurred.
+
+While running game code:
+  File "game/options.rpy", line 211, in script
+    init python:
+  File "game/options.rpy", line 213, in <module>
+    music_list = {i.split('.')[0]: 'audio/' + i for i in os.listdir('H:/renpy-8.1.1-sdk/How steel was tempered/game' + '/audio')}
+  File "game/options.rpy", line 213, in <lambda>
+    music_list = {i.split('.')[0]: 'audio/' + i for i in os.listdir('H:/renpy-8.1.1-sdk/How steel was tempered/game' + '/audio')}
+FileNotFoundError: [WinError 3] Системе не удается найти указанный путь: 'H:/renpy-8.1.1-sdk/How steel was tempered/game/audio'
+
+-- Full Traceback ------------------------------------------------------------
+
+Full traceback:
+  File "game/options.rpy", line 211, in script
+    init python:
+  File "F:\renpy-8.1.1-sdk\renpy\ast.py", line 1138, in execute
+    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
+  File "F:\renpy-8.1.1-sdk\renpy\python.py", line 1122, in py_exec_bytecode
+    exec(bytecode, globals, locals)
+  File "game/options.rpy", line 213, in <module>
+    music_list = {i.split('.')[0]: 'audio/' + i for i in os.listdir('H:/renpy-8.1.1-sdk/How steel was tempered/game' + '/audio')}
+  File "game/options.rpy", line 213, in <lambda>
+    music_list = {i.split('.')[0]: 'audio/' + i for i in os.listdir('H:/renpy-8.1.1-sdk/How steel was tempered/game' + '/audio')}
+FileNotFoundError: [WinError 3] Системе не удается найти указанный путь: 'H:/renpy-8.1.1-sdk/How steel was tempered/game/audio'
+
+Windows-10-10.0.19045 AMD64
+Ren'Py 8.1.1.23060707
+How steel was tempered 1.0
+Sat Aug 19 13:59:46 2023

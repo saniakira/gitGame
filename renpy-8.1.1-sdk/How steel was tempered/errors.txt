@@ -1,0 +1,14 @@
+﻿I'm sorry, but errors were detected in your script. Please correct the
+errors listed below, and try again.
+
+
+File "game/scenario/prologue.rpy", line 2: end of line expected.
+    show bg menu
+            ^
+
+File "game/script.rpy", line 6: expected '=' not found.
+    image bg menu = Tile("images/menu/game_menu.png")
+             ^
+
+Ren'Py Version: Ren'Py 8.1.1.23060707
+Mon Aug 14 17:15:46 2023
