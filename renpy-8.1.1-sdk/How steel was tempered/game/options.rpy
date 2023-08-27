@@ -208,7 +208,8 @@ init python:
 ## разделённые дробью.
 
 # define build.itch_project = "renpytom/test-project"
+# 'C:/Users/sbalm/Documents/GitHub/gitGame/renpy-8.1.1-sdk/How steel was tempered/game'
 init python:
     import os
-    music_list = {i.split('.')[0]: 'audio/' + i for i in os.listdir('F:/renpy-8.1.1-sdk/How steel was tempered/game' + '/audio')}
+    music_list = {i.split('.')[0]: 'audio/' + i for i in os.listdir(os.getcwd() + '/How steel was tempered/game/audio')}
     print(music_list)

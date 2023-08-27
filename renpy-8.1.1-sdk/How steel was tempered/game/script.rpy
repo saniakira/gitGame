@@ -3,7 +3,7 @@
 # Определение персонажей игры.
 define dayn = Character('Dayn', color="#fcf700")
 define th = Character('Dayn', color="#fcf700")
-image bg ext_entrance_day = "first.jpg"
+image bg ext_entrance_day = "cg/first.jpg"
 
 # Вместо использования оператора image можете просто
 # складывать все ваши файлы изображений в папку images.
