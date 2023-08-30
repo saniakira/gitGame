@@ -3,8 +3,17 @@
 ################################################################################
 
 init offset = -1
+init python:
+    import os
+    music_list = {i.split('.')[0]: 'audio/music/' + i for i in os.listdir(os.getcwd() + '/How steel was tempered/game/audio/music')}
+    sound_list = {i.split('.')[0]: 'audio/sound/' + i for i in os.listdir(os.getcwd() + '/How steel was tempered/game/audio/sound')}
+    ambience_list = {i.split('.')[0]: 'audio/ambience/' + i for i in os.listdir(os.getcwd() + '/How steel was tempered/game/audio/ambience')}
+    bg_list = {i.split('.')[0]: 'bg/' + i for i in os.listdir(os.getcwd() + '/How steel was tempered/game/images/bg/')}
+    cg_list = {i.split('.')[0]: 'cg/' + i for i in os.listdir(os.getcwd() + '/How steel was tempered/game/images/cg/')}
+    menu_list = {i.split('.')[0]: 'images/game_menu/' + i for i in os.listdir(os.getcwd() + '/How steel was tempered/game/images/game_menu/')}
 
 
+    print(music_list,sound_list,ambience_list,bg_list,cg_list)
 ################################################################################
 ## Стили
 ################################################################################
@@ -317,19 +326,6 @@ screen navigation():
 
             textbutton _("Главное меню") action MainMenu()
 
-        textbutton _("Об игре") action ShowMenu("about")
-
-        if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
-
-            ## Помощь не необходима и не относится к мобильным устройствам.
-            textbutton _("Помощь") action ShowMenu("help")
-
-        if renpy.variant("pc"):
-
-            ## Кнопка выхода блокирована в iOS и не нужна на Android и в веб-
-            ## версии.
-            textbutton _("Выход") action Quit(confirm=not main_menu)
-
 
 style navigation_button is gui_button
 style navigation_button_text is gui_button_text
@@ -347,68 +343,67 @@ screen main_menu():
     tag menu
     modal True
     add gui.main_menu_background
-    
     imagebutton:
         align( .002, .6)
         auto "gui/menu_buttons/menu_start_%s.png"
-        hover_sound "audio/selected.ogg"
+        hover_sound sound_list['selected']
         action (Hide("main_menu"),Jump("start"))
     
     imagebutton:
-        align( .6, .7)
+        align( .586, .7)
         auto "gui/menu_buttons/menu_exit_%s.png"
-        hover_sound "audio/selected.ogg"
+        hover_sound sound_list['selected']
         action (Hide("main_menu"),Quit())
     
     imagebutton:
-        align( .055, .95)
+        align( .11, .93)
         auto "gui/menu_buttons/menu_load_%s.png"
-        hover_sound "audio/selected.ogg"
+        hover_sound sound_list['selected']
         action (Hide("main_menu"),ShowMenu('load'))
     
     imagebutton:
-        align( .19, .82)
+        align( .24, .80)
         auto "gui/menu_buttons/menu_save_%s.png"
-        hover_sound "audio/selected.ogg"
+        hover_sound sound_list['selected']
         action (Hide("main_menu"),ShowMenu('load'))
     
     imagebutton:
-        align( .8, .7)
+        align( .77, .7)
         auto "gui/menu_buttons/menu_preferences_%s.png"
-        hover_sound "audio/selected.ogg"
+        hover_sound sound_list['selected']
         action (Hide("main_menu"),ShowMenu('preferences'))
     
     add 'gui/menu_buttons/wood.png':
         yalign 0.5
         xalign 0.5
 
-style main_menu_frame is empty
-style main_menu_vbox is vbox
-style main_menu_text is gui_text
-style main_menu_title is main_menu_text
-style main_menu_version is main_menu_text
+# style main_menu_frame is empty
+# style main_menu_vbox is vbox
+# style main_menu_text is gui_text
+# style main_menu_title is main_menu_text
+# style main_menu_version is main_menu_text
 
-style main_menu_frame:
-    xsize 420
-    yfill True
+# style main_menu_frame:
+#     xsize 420
+#     yfill True
 
-    background "gui/overlay/main_menu.png"
+#     background "gui/overlay/main_menu.png"
 
-style main_menu_vbox:
-    xalign 1.0
-    xoffset -30
-    xmaximum 1200
-    yalign 1.0
-    yoffset -30
+# style main_menu_vbox:
+#     xalign 1.0
+#     xoffset -30
+#     xmaximum 1200
+#     yalign 1.0
+#     yoffset -30
 
-style main_menu_text:
-    properties gui.text_properties("main_menu", accent=True)
+# style main_menu_text:
+#     properties gui.text_properties("main_menu", accent=True)
 
-style main_menu_title:
-    properties gui.text_properties("title")
+# style main_menu_title:
+#     properties gui.text_properties("title")
 
-style main_menu_version:
-    properties gui.text_properties("version")
+# style main_menu_version:
+#     properties gui.text_properties("version")
 
 
 ## Экран игрового меню #########################################################
@@ -419,7 +414,6 @@ style main_menu_version:
 ## Параметр scroll может быть None или один из "viewport" или "vpgrid". Этот
 ## экран предназначен для использования с одним или несколькими дочерними
 ## элементами, которые трансклюдируются (помещаются) внутрь него.
-
 screen game_menu(title, scroll=None, yinitial=0.0):
 
     style_prefix "game_menu"
@@ -537,43 +531,6 @@ style return_button:
     xpos gui.navigation_xpos
     yalign 1.0
     yoffset -45
-
-
-## Экран Об игре ###############################################################
-##
-## Этот экран показывает авторскую информацию об игре и Ren'Py.
-##
-## В этом экране нет ничего особенного, и он служит только примером того, каким
-## можно сделать свой экран.
-
-screen about():
-
-    tag menu
-
-    ## Этот оператор включает игровое меню внутрь этого экрана. Дочерний vbox
-    ## включён в порт просмотра внутри экрана игрового меню.
-    use game_menu(_("Об игре"), scroll="viewport"):
-
-        style_prefix "about"
-
-        vbox:
-
-            label "[config.name!t]"
-            text _("Версия [config.version!t]\n")
-
-            ## gui.about обычно установлено в options.rpy.
-            if gui.about:
-                text "[gui.about!t]\n"
-
-            text _("Сделано с помощью {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n\n[renpy.license!t]")
-
-
-style about_label is gui_label
-style about_label_text is gui_label_text
-style about_text is gui_text
-
-style about_label_text:
-    size gui.label_text_size
 
 
 ## Экраны загрузки и сохранения ################################################
@@ -725,86 +682,118 @@ style slot_button_text:
 ## Экран настроек позволяет игроку настраивать игру под себя.
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#preferences
-
+##########################################################################################################################################
 screen preferences():
 
     tag menu
+    add menu_list['game_menu']
+    imagebutton:
+        align( .11, .93)
+        auto "gui/menu_buttons/menu_load_%s.png"
+        hover_sound sound_list['selected']
+        action (Hide("main_menu"),ShowMenu('load'))
+    imagebutton:
+        align( .11, .93)
+        auto "gui/menu_buttons/menu_load_%s.png"
+        hover_sound sound_list['selected']
+        action (Hide("main_menu"),ShowMenu('load'))
+    bar:
+        value Preference("music volume")
+        right_bar 'gui/slider/horizontal_idle_bar2.png'
+        left_bar "gui/slider/bar.png"
+        thumb "gui/slider/horizontal_hover_thumb.png"
+        xpos 960
+        ypos 540
+        xmaximum 525
+        ymaximum 100
+    bar:
+        value Preference("sound volume")
+        right_bar 'gui/slider/horizontal_idle_bar2.png'
+        left_bar "gui/slider/bar.png"
+        thumb "gui/slider/horizontal_hover_thumb.png"
+        xpos 960
+        ypos 640
+        xmaximum 525
+        ymaximum 100
+    imagebutton:
+        idle "gui/menu_buttons/no_sound.png"
+        hover "gui/menu_buttons/no_sound.png"
+        action Preference("all mute", "toggle")
+    # use game_menu(_("Настройки"), scroll="viewport"):
 
-    use game_menu(_("Настройки"), scroll="viewport"):
+    #     vbox:
 
-        vbox:
+    #         hbox:
+    #             box_wrap True
 
-            hbox:
-                box_wrap True
+    #             if renpy.variant("pc") or renpy.variant("web"):
 
-                if renpy.variant("pc") or renpy.variant("web"):
+    #                 vbox:
+    #                     style_prefix "radio"
+    #                     label _("Режим экрана")
+    #                     textbutton _("Оконный") action Preference("display", "window")
+    #                     textbutton _("Полный") action Preference("display", "fullscreen")
 
-                    vbox:
-                        style_prefix "radio"
-                        label _("Режим экрана")
-                        textbutton _("Оконный") action Preference("display", "window")
-                        textbutton _("Полный") action Preference("display", "fullscreen")
+    #             vbox:
+    #                 style_prefix "check"
+    #                 label _("Пропуск")
+    #                 textbutton _("Всего текста") action Preference("skip", "toggle")
+    #                 textbutton _("После выборов") action Preference("after choices", "toggle")
+    #                 textbutton _("Переходов") action InvertSelected(Preference("transitions", "toggle"))
 
-                vbox:
-                    style_prefix "check"
-                    label _("Пропуск")
-                    textbutton _("Всего текста") action Preference("skip", "toggle")
-                    textbutton _("После выборов") action Preference("after choices", "toggle")
-                    textbutton _("Переходов") action InvertSelected(Preference("transitions", "toggle"))
+    #             ## Дополнительные vbox'ы типа "radio_pref" или "check_pref"
+    #             ## могут быть добавлены сюда для добавления новых настроек.
 
-                ## Дополнительные vbox'ы типа "radio_pref" или "check_pref"
-                ## могут быть добавлены сюда для добавления новых настроек.
+    #         null height (4 * gui.pref_spacing)
 
-            null height (4 * gui.pref_spacing)
+    #         hbox:
+    #             style_prefix "slider"
+    #             box_wrap True
 
-            hbox:
-                style_prefix "slider"
-                box_wrap True
+    #             vbox:
 
-                vbox:
+    #                 label _("Скорость текста")
 
-                    label _("Скорость текста")
+    #                 bar value Preference("text speed")
 
-                    bar value Preference("text speed")
+    #                 label _("Скорость авточтения")
 
-                    label _("Скорость авточтения")
+    #                 bar value Preference("auto-forward time")
 
-                    bar value Preference("auto-forward time")
+    #             vbox:
 
-                vbox:
+    #                 if config.has_music:
+    #                     label _("Громкость музыки")
 
-                    if config.has_music:
-                        label _("Громкость музыки")
+    #                     hbox:
+    #                         bar value Preference("music volume")
 
-                        hbox:
-                            bar value Preference("music volume")
+    #                 if config.has_sound:
 
-                    if config.has_sound:
+    #                     label _("Громкость звуков")
 
-                        label _("Громкость звуков")
+    #                     hbox:
+    #                         bar value Preference("sound volume")
 
-                        hbox:
-                            bar value Preference("sound volume")
-
-                            if config.sample_sound:
-                                textbutton _("Тест") action Play("sound", config.sample_sound)
+    #                         if config.sample_sound:
+    #                             textbutton _("Тест") action Play("sound", config.sample_sound)
 
 
-                    if config.has_voice:
-                        label _("Громкость голоса")
+    #                 if config.has_voice:
+    #                     label _("Громкость голоса")
 
-                        hbox:
-                            bar value Preference("voice volume")
+    #                     hbox:
+    #                         bar value Preference("voice volume")
 
-                            if config.sample_voice:
-                                textbutton _("Тест") action Play("voice", config.sample_voice)
+    #                         if config.sample_voice:
+    #                             textbutton _("Тест") action Play("voice", config.sample_voice)
 
-                    if config.has_music or config.has_sound or config.has_voice:
-                        null height gui.pref_spacing
+    #                 if config.has_music or config.has_sound or config.has_voice:
+    #                     null height gui.pref_spacing
 
-                        textbutton _("Без звука"):
-                            action Preference("all mute", "toggle")
-                            style "mute_all_button"
+    #                     textbutton _("Без звука"):
+    #                         action Preference("all mute", "toggle")
+    #                         style "mute_all_button"
 
 
 style pref_label is gui_label
@@ -967,168 +956,6 @@ style history_label:
 
 style history_label_text:
     xalign 0.5
-
-
-## Экран помощи ################################################################
-##
-## Экран, дающий информацию о клавишах управления. Он использует другие экраны
-## (keyboard_help, mouse_help, и gamepad_help), чтобы показывать актуальную
-## помощь.
-
-screen help():
-
-    tag menu
-
-    default device = "keyboard"
-
-    use game_menu(_("Помощь"), scroll="viewport"):
-
-        style_prefix "help"
-
-        vbox:
-            spacing 23
-
-            hbox:
-
-                textbutton _("Клавиатура") action SetScreenVariable("device", "keyboard")
-                textbutton _("Мышь") action SetScreenVariable("device", "mouse")
-
-                if GamepadExists():
-                    textbutton _("Геймпад") action SetScreenVariable("device", "gamepad")
-
-            if device == "keyboard":
-                use keyboard_help
-            elif device == "mouse":
-                use mouse_help
-            elif device == "gamepad":
-                use gamepad_help
-
-
-screen keyboard_help():
-
-    hbox:
-        label _("Войти")
-        text _("Прохождение диалогов, активация интерфейса.")
-
-    hbox:
-        label _("Пробел")
-        text _("Прохождение диалогов без возможности делать выбор.")
-
-    hbox:
-        label _("Стрелки")
-        text _("Навигация по интерфейсу.")
-
-    hbox:
-        label _("Esc")
-        text _("Вход в игровое меню.")
-
-    hbox:
-        label _("Ctrl")
-        text _("Пропускает диалоги, пока зажат.")
-
-    hbox:
-        label _("Tab")
-        text _("Включает режим пропуска.")
-
-    hbox:
-        label _("Страница вверху")
-        text _("Откат назад по сюжету игры.")
-
-    hbox:
-        label _("Страница вниз")
-        text _("Откатывает предыдущее действие вперёд.")
-
-    hbox:
-        label "H"
-        text _("Скрывает интерфейс пользователя.")
-
-    hbox:
-        label "S"
-        text _("Делает снимок экрана.")
-
-    hbox:
-        label "V"
-        text _("Включает поддерживаемый {a=https://www.renpy.org/l/voicing}синтезатор речи{/a}.")
-
-    hbox:
-        label "Shift+A"
-        text _("Открывает меню специальных возможностей.")
-
-
-screen mouse_help():
-
-    hbox:
-        label _("Левый клик")
-        text _("Прохождение диалогов, активация интерфейса.")
-
-    hbox:
-        label _("Клик колёсиком")
-        text _("Скрывает интерфейс пользователя.")
-
-    hbox:
-        label _("Правый клик")
-        text _("Вход в игровое меню.")
-
-    hbox:
-        label _("Колёсико вверх\nКлик на сторону отката")
-        text _("Откат назад по сюжету игры.")
-
-    hbox:
-        label _("Колёсико вниз")
-        text _("Откатывает предыдущее действие вперёд.")
-
-
-screen gamepad_help():
-
-    hbox:
-        label _("Правый триггер\nA/Нижняя кнопка")
-        text _("Прохождение диалогов, активация интерфейса.")
-
-    hbox:
-        label _("Левый Триггер\nЛевый Бампер")
-        text _("Откат назад по сюжету игры.")
-
-    hbox:
-        label _("Правый бампер")
-        text _("Откатывает предыдущее действие вперёд.")
-
-
-    hbox:
-        label _("Крестовина, Стики")
-        text _("Навигация по интерфейсу.")
-
-    hbox:
-        label _("Начало, Руководство")
-        text _("Вход в игровое меню.")
-
-    hbox:
-        label _("Y/Верхняя кнопка")
-        text _("Скрывает интерфейс пользователя.")
-
-    textbutton _("Калибровка") action GamepadCalibrate()
-
-
-style help_button is gui_button
-style help_button_text is gui_button_text
-style help_label is gui_label
-style help_label_text is gui_label_text
-style help_text is gui_text
-
-style help_button:
-    properties gui.button_properties("help_button")
-    xmargin 12
-
-style help_button_text:
-    properties gui.button_text_properties("help_button")
-
-style help_label:
-    xsize 375
-    right_padding 30
-
-style help_label_text:
-    size gui.text_size
-    xalign 1.0
-    textalign 1.0
 
 
 

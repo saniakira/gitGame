@@ -60,9 +60,7 @@ define config.has_voice = True
 ## Раскомментируйте следующую строчку, чтобы настроить аудиофайл, который будет
 ## проигрываться в главном меню. Этот файл продолжит проигрываться во время
 ## игры, если не будет остановлен, или не начнёт проигрываться другой аудиофайл.
-
-# define config.main_menu_music = "audio/main_menu.mp3"
-
+define config.main_menu_music= music_list['main_theme']
 
 ## Переходы ####################################################################
 ##
@@ -209,7 +207,3 @@ init python:
 
 # define build.itch_project = "renpytom/test-project"
 # 'C:/Users/sbalm/Documents/GitHub/gitGame/renpy-8.1.1-sdk/How steel was tempered/game'
-init python:
-    import os
-    music_list = {i.split('.')[0]: 'audio/' + i for i in os.listdir(os.getcwd() + '/How steel was tempered/game/audio')}
-    print(music_list)
